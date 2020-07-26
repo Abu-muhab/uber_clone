@@ -47,23 +47,17 @@ class _WhereToScreenState extends State<WhereToScreen> {
     var search = SearchApi.convertCoordinatesToAddress(
         locationSelectorKey.currentState.markerLocation);
     search.then((result) {
-      if (mapCapAlterField == true) {
-        destinationController.clear();
-      }
+      destinationController.clear();
       Provider.of<LocationModel>(context, listen: false)
           .setDropOffLocationInfo(result);
-      if (mapCapAlterField == true) {
-        destinationController.text =
-            Provider.of<LocationModel>(context, listen: false)
-                .dropOffLocationInfo
-                .name;
-      }
-      if (mapCapAlterField == true) {
-        setState(() {
-          doneButton = true;
-        });
-        FocusScope.of(context).requestFocus(new FocusNode());
-      }
+      destinationController.text =
+          Provider.of<LocationModel>(context, listen: false)
+              .dropOffLocationInfo
+              .name;
+      setState(() {
+        doneButton = true;
+      });
+      FocusScope.of(context).requestFocus(new FocusNode());
       setState(() {
         fetchingInfo = false;
       });
@@ -154,7 +148,9 @@ class _WhereToScreenState extends State<WhereToScreen> {
                     if (mapUpdateCount < 2) {
                       mapUpdateCount++;
                     }
-                    getSearchResultFromMap();
+                    if (mapCapAlterField == true) {
+                      getSearchResultFromMap();
+                    }
                   },
                 ),
           doneButton == true

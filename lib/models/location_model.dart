@@ -241,12 +241,14 @@ class LocationModel extends ChangeNotifier {
     notifyListeners();
 
     //update user location as it changes
-    timer = Timer.periodic(Duration(seconds: 30), (timer) async {
+    timer = Timer.periodic(Duration(seconds: 15), (timer) async {
       try {
         print("updating location");
         currentLocation = await location.getLocation();
-        currentLocationInfo = await SearchApi.convertCoordinatesToAddress(
-            LatLng(currentLocation.latitude, currentLocation.longitude));
+        if (currentLocationInfo.formattedAddress == "") {
+          currentLocationInfo = await SearchApi.convertCoordinatesToAddress(
+              LatLng(currentLocation.latitude, currentLocation.longitude));
+        }
         notifyListeners();
       } catch (err) {}
     });
